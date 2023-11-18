@@ -97,6 +97,7 @@ def enrollment(widget):
     with open(f"{widget.regnum.text}.dat", "wb") as file:
         file.write(bytearray(data))
     widget.biometric_message.text = f"Fingerprint template stored as {widget.regnum.text}.dat."
+    widget.finger_captured.text = "capture"
     time.sleep(1)
 
     return True
