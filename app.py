@@ -139,7 +139,7 @@ class RightLayout(BoxLayout):
         base64_data = base64.b64encode(self.fingerprint)
 
         # API endpoint where you want to send the data
-        url = f'{API_URL}/biometric/enroll/{self.enrollee.text.lower()}'
+        url = f'{API_URL}/biometric/enroll/{self.enrollee.lower()}'
 
         # Prepare headers if needed
         headers = {'Content-Type': 'application/json', 'Authorization':self.getserial()}
