@@ -142,10 +142,10 @@ class RightLayout(BoxLayout):
             self.finger_captured.text = ""
 
         def on_failure(req, result):
-            self.biometric_message.text = result
+            self.biometric_message.text = str(result)
 
         def on_error(req, error):
-            self.biometric_message.text = error
+            self.biometric_message.text = str(error)
         
         # Make a POST request using UrlRequest
         UrlRequest(
