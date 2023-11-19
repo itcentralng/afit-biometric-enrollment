@@ -47,13 +47,8 @@ class LeftLayout(BoxLayout):
 class RightLayout(BoxLayout):
     def __init__(self, **kwargs):
         super(RightLayout, self).__init__(**kwargs)
-
-        with self.canvas.before:
-            Color(0.97, 0.97, 0.95, 1)  # Background color F7F7F2 in RGB
-            self.rect = Rectangle(size=self.size, pos=self.pos)
-
-        self.bind(size=self._update_rect, pos=self._update_rect)
         
+        self.fingerprint = None
         self.finger_captured = Label()
         self.finger_captured.bind(text=self.show_submit)
 
@@ -67,10 +62,10 @@ class RightLayout(BoxLayout):
         
         self.biometric_area = BoxLayout(orientation="vertical")
         
-        self.biometric_message = Label(color=(1,1,1,1))
+        self.biometric_message = Label(color=(0,0,0,1))
         
         with self.biometric_message.canvas.before:
-            Color(0.89, 0.9, 0.76, 1)
+            Color(0xCA/255.0, 0xF0/255.0, 0xF8/255.0, 1.0)
             self.rect = Rectangle(size=self.biometric_message.size, pos=self.biometric_message.pos)
         
         self.biometric_message.bind(size=self._update_rect, pos=self._update_rect)
@@ -78,10 +73,10 @@ class RightLayout(BoxLayout):
         
 
         self.buttons_area = BoxLayout(orientation="vertical")
-        self.start_biometric = Button(text='Start Capture', size_hint=(1, None), height=40)
+        self.start_biometric = Button(text='Start Capture', size_hint=(1, None), height=40, padding=[20, 20, 20, 20])
         self.start_biometric.bind(on_press=self.intialize_biometric)
         
-        self.submit_button = Button(text='Submit', size_hint=(1, None), height=40)
+        self.submit_button = Button(text='Submit', size_hint=(1, None), height=40, padding=[20, 20, 20, 20])
         
         self.form_layout.add_widget(self.buttons_area)
 
@@ -106,6 +101,9 @@ class RightLayout(BoxLayout):
         
         thread = threading.Thread(target=run_enrollment)
         thread.start()
+    
+    def do_submit(self,*args):
+        pass
     
     def _update_rect(self, instance, value):
         self.rect.size = instance.size
