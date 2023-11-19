@@ -134,14 +134,18 @@ class RightLayout(BoxLayout):
             'fingerprint': base64_data.decode()  # Convert bytes to string for JSON
         }
 
-        # Make a POST request
-        response = requests.post(url, json=payload, headers=headers)
+        thread = threading.Thread(target=make_request)
+        thread.start()
 
-        # Check response status
-        if response.status_code == 200:
-            print('Bytearray data sent successfully!')
-        else:
-            print('Failed to send bytearray data.')
+        def make_request():
+            # Make a POST request
+            response = requests.post(url, json=payload, headers=headers)
+
+            # Check response status
+            if response.status_code == 200:
+                print('Bytearray data sent successfully!')
+            else:
+                print('Failed to send bytearray data.')
     
     def _update_rect(self, instance, value):
         self.rect.size = instance.size
