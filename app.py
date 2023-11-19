@@ -98,6 +98,7 @@ class RightLayout(BoxLayout):
     
     def on_spinner_select(self, spinner, text):
         self.enrollee = text
+        self.identity.hint_text = "Enter Registration Number" if text.lower() == "student" else "Enter Staff ID"
     
     def show_biometric(self, *args):
         if self.identity.text.strip():
