@@ -1,6 +1,6 @@
 import base64
+import json
 import kivy
-import requests
 kivy.require('2.2.1')
 
 from kivy.app import App
@@ -10,6 +10,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.graphics import Color, Rectangle
+from kivy.network.urlrequest import UrlRequest
 
 import threading
 
@@ -134,19 +135,31 @@ class RightLayout(BoxLayout):
             'fingerprint': base64_data.decode()  # Convert bytes to string for JSON
         }
 
-        def make_request():
-            # Make a POST request
-            response = requests.post(url, json=payload, headers=headers)
+        def on_success(req, result):
+            print('Request successful!')
+            # Perform actions after a successful request
 
-            # Check response status
-            if response.status_code == 200:
-                print('Bytearray data sent successfully!')
-            else:
-                print('Failed to send bytearray data.')
+        def on_failure(req, result):
+            print('Request failed:', result)
+            # Perform actions after a failed request
 
-        thread = threading.Thread(target=make_request)
-        thread.start()
-    
+        def on_error(req, error):
+            print('Request error:', error)
+            # Perform actions in case of a request error
+
+        
+        # Make a POST request using UrlRequest
+        UrlRequest(
+            url,
+            req_body=json.dumps(payload),
+            req_headers=headers,
+            method='POST',
+            on_success=on_success,
+            on_failure=on_failure,
+            on_error=on_error
+        )
+        
+        
     def _update_rect(self, instance, value):
         self.rect.size = instance.size
         self.rect.pos = instance.pos
