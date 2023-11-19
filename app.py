@@ -9,6 +9,7 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
+from kivy.uix.spinner import Spinner
 from kivy.graphics import Color, Rectangle
 from kivy.network.urlrequest import UrlRequest
 
@@ -58,11 +59,19 @@ class RightLayout(BoxLayout):
 
         self.form_layout = BoxLayout(orientation='vertical', padding=[20, 20, 20, 20], spacing=10)
 
+        # field to store the enrollee we are working with
+        self.enrollee = ""
         
-        self.regnum = TextInput(multiline=False, hint_text="Enter Registration Number", size_hint=(1, None), height=40)
-        self.regnum.bind(text=self.show_biometric)
+        options = ['Student', 'Staff']
+        spinner = Spinner(text='Select an option', values=options)
+        spinner.bind(text=self.on_spinner_select)
+        self.form_layout.add_widget(spinner)
 
-        self.form_layout.add_widget(self.regnum)
+        
+        self.identity = TextInput(multiline=False, hint_text="Enter Registration Number", size_hint=(1, None), height=40)
+        self.identity.bind(text=self.show_biometric)
+
+        self.form_layout.add_widget(self.identity)
         
         self.biometric_area = BoxLayout(orientation="vertical")
         
@@ -87,8 +96,11 @@ class RightLayout(BoxLayout):
 
         self.add_widget(self.form_layout)
     
+    def on_spinner_select(self, spinner, text):
+        self.enrollee = text
+    
     def show_biometric(self, *args):
-        if self.regnum.text.strip():
+        if self.identity.text.strip():
             if self.biometric_area not in self.form_layout.children:
                 self.form_layout.add_widget(self.biometric_area, index=1)
                 self.buttons_area.add_widget(self.start_biometric, index=1)
@@ -126,20 +138,20 @@ class RightLayout(BoxLayout):
         base64_data = base64.b64encode(self.fingerprint)
 
         # API endpoint where you want to send the data
-        url = f'{API_URL}/biometric/enroll'
+        url = f'{API_URL}/biometric/enroll/{self.enrollee.text.lower()}'
 
         # Prepare headers if needed
         headers = {'Content-Type': 'application/json', 'Authorization':self.getserial()}
 
         # Prepare your payload, including the Base64 data
         payload = {
-            'regnum': self.regnum.text,
+            'identity': self.identity.text,
             'fingerprint': base64_data.decode()  # Convert bytes to string for JSON
         }
 
         def on_success(req, result):
             self.biometric_message.text = ""
-            self.regnum.text = ""
+            self.identity.text = ""
             self.fingerprint = None
             self.finger_captured.text = ""
             self.buttons_area.remove_widget(self.submit_button)
