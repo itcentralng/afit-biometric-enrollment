@@ -15,6 +15,7 @@ from kivy.network.urlrequest import UrlRequest
 import threading
 
 from biometric import enrollment
+from config import API_URL
 
 class LeftLayout(BoxLayout):
     def __init__(self, **kwargs):
@@ -125,7 +126,7 @@ class RightLayout(BoxLayout):
         base64_data = base64.b64encode(self.fingerprint)
 
         # API endpoint where you want to send the data
-        url = 'https://7d3e-197-210-76-53.ngrok-free.app/biometric/enroll'
+        url = f'{API_URL}/biometric/enroll'
 
         # Prepare headers if needed
         headers = {'Content-Type': 'application/json', 'Authorization':self.getserial()}
