@@ -63,7 +63,7 @@ class RightLayout(BoxLayout):
         self.enrollee = ""
         
         options = ['Student', 'Staff']
-        spinner = Spinner(text='Select an option', values=options)
+        spinner = Spinner(text='Select enrollee', values=options, size_hint=(1, None), height=40, padding=[20, 20, 20, 20])
         spinner.bind(text=self.on_spinner_select)
         self.form_layout.add_widget(spinner)
 
