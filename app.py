@@ -136,17 +136,16 @@ class RightLayout(BoxLayout):
         }
 
         def on_success(req, result):
-            print('Request successful!')
-            # Perform actions after a successful request
+            self.biometric_message.text = ""
+            self.regnum.text = ""
+            self.fingerprint = None
+            self.finger_captured.text = ""
 
         def on_failure(req, result):
-            print('Request failed:', result)
-            # Perform actions after a failed request
+            self.biometric_message.text = result
 
         def on_error(req, error):
-            print('Request error:', error)
-            # Perform actions in case of a request error
-
+            self.biometric_message.text = error
         
         # Make a POST request using UrlRequest
         UrlRequest(
