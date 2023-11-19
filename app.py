@@ -1,4 +1,6 @@
+import base64
 import kivy
+import requests
 kivy.require('2.2.1')
 
 from kivy.app import App
@@ -115,8 +117,30 @@ class RightLayout(BoxLayout):
             cpuserial = "ERROR000000000"
         return cpuserial
     
-    def do_submit(self,*args):
-        pass
+    def do_submit(self, *args):
+        # Convert bytearray to Base64
+        base64_data = base64.b64encode(self.fingerprint)
+
+        # API endpoint where you want to send the data
+        url = 'https://7d3e-197-210-76-53.ngrok-free.app/biometric/enroll'
+
+        # Prepare headers if needed
+        headers = {'Content-Type': 'application/json', 'Authorization':self.get_serial()}
+
+        # Prepare your payload, including the Base64 data
+        payload = {
+            'regnum': self.regnum.text,
+            'fingerprint': base64_data.decode()  # Convert bytes to string for JSON
+        }
+
+        # Make a POST request
+        response = requests.post(url, json=payload, headers=headers)
+
+        # Check response status
+        if response.status_code == 200:
+            print('Bytearray data sent successfully!')
+        else:
+            print('Failed to send bytearray data.')
     
     def _update_rect(self, instance, value):
         self.rect.size = instance.size
