@@ -97,7 +97,7 @@ class RightLayout(BoxLayout):
                 self.buttons_area.remove_widget(self.start_biometric)
     
     def show_submit(self, *args):
-        if self.finger_captured == 'capture' and self.submit_button not in self.buttons_area.children:
+        if self.finger_captured.text == 'capture' and self.submit_button not in self.buttons_area.children:
             self.buttons_area.add_widget(self.submit_button)
         
     def intialize_biometric(self, instance):
@@ -141,6 +141,7 @@ class RightLayout(BoxLayout):
             self.regnum.text = ""
             self.fingerprint = None
             self.finger_captured.text = ""
+            self.buttons_area.remove_widget(self.submit_button)
 
         def on_failure(req, result):
             self.biometric_message.text = str(result)
