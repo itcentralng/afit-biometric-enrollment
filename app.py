@@ -97,7 +97,8 @@ class RightLayout(BoxLayout):
                 self.buttons_area.remove_widget(self.start_biometric)
     
     def show_submit(self, *args):
-        self.buttons_area.add_widget(self.submit_button)
+        if self.submit_button not in self.buttons_area.children:
+            self.buttons_area.add_widget(self.submit_button)
         
     def intialize_biometric(self, instance):
         def run_enrollment():
