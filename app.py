@@ -79,6 +79,7 @@ class RightLayout(BoxLayout):
         self.start_biometric.bind(on_press=self.intialize_biometric)
         
         self.submit_button = Button(text='Submit', size_hint=(1, None), height=40, padding=[20, 20, 20, 20])
+        self.submit_button.bind(on_press=self.do_submit)
         
         self.form_layout.add_widget(self.buttons_area)
 
@@ -125,7 +126,7 @@ class RightLayout(BoxLayout):
         url = 'https://7d3e-197-210-76-53.ngrok-free.app/biometric/enroll'
 
         # Prepare headers if needed
-        headers = {'Content-Type': 'application/json', 'Authorization':self.get_serial()}
+        headers = {'Content-Type': 'application/json', 'Authorization':self.getserial()}
 
         # Prepare your payload, including the Base64 data
         payload = {
